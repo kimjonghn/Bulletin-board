@@ -22,13 +22,29 @@ public class BoardService {
 	public int write(WriteReqDto writeReqDto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();  //현재 로그인한 사용자 정보
 		principalUser principalUser = (principalUser) authentication.getPrincipal(); //현재 인증된 사용자
-		Map<String, Object> map = new HashMap<>();
 		
-		map.put("title" , writeReqDto.getTitle());
-		map.put("content" , writeReqDto.getContent());
-		map.put("userId", principalUser.getUserId());
+		String title = writeReqDto.getTitle();
+		String content = writeReqDto.getContent();
 		
-		return boardRepository.write(map);
+		if(title != null && !title.isEmpty() && title.length() >= 2) {
+			
+			if(content != null && !content.isEmpty() && content.length() >= 2) {
+				
+				Map<String, Object> map = new HashMap<>();
+				
+				map.put("title" , writeReqDto.getTitle());
+				map.put("content" , writeReqDto.getContent());
+				map.put("userId", principalUser.getUserId());
+				
+				return boardRepository.write(map);
+			}
+			return 0;
+			
+			}else {
+				
+				return 0;
+			}
+		
 	}
 	
 }
