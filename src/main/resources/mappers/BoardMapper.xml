@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.bulletinboard.repository.BoardRepository">
+
+	<resultMap type="com.example.bulletinboard.entity.Board" id="BoardMap">
+		<id property="boardId" column="board_id"/>
+		<result property="title" column="board_title"/>
+		<result property="content" column="board_content"/>
+		<result property="userId" column="user_id"/>
+	</resultMap>
+	
+	<insert id="write" parameterType="com.example.bulletinboard.entity.Board" useGeneratedKeys="true" keyProperty="board_id">
+		insert into board_tb
+		values (0, #{title}, #{content}, #{userId})
+	</insert>
+	
+</mapper>

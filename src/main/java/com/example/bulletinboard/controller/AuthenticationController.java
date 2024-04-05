@@ -39,6 +39,7 @@ public class AuthenticationController {
 	public ResponseEntity<?> login(@Valid @RequestBody LoginReqDto loginReqDto , BindingResult bindingResult){
 		return ResponseEntity.ok(authenticationService.signin(loginReqDto));
 	}
+	
 	@GetMapping("/authenticate")
 	public ResponseEntity<?> authenticate(@RequestHeader(value="Authorization")String accessToken){
 

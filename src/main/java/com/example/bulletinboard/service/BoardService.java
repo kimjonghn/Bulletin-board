@@ -1,0 +1,34 @@
+package com.example.bulletinboard.service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import com.example.bulletinboard.dto.board.WriteReqDto;
+import com.example.bulletinboard.repository.BoardRepository;
+import com.example.bulletinboard.security.principalUser;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class BoardService {
+	
+	private final BoardRepository boardRepository;
+	
+	public int write(WriteReqDto writeReqDto) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();  //현재 로그인한 사용자 정보
+		principalUser principalUser = (principalUser) authentication.getPrincipal(); //현재 인증된 사용자
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("title" , writeReqDto.getTitle());
+		map.put("content" , writeReqDto.getContent());
+		map.put("userId", principalUser.getUserId());
+		
+		return boardRepository.write(map);
+	}
+	
+}
