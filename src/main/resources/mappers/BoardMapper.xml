@@ -9,9 +9,16 @@
 		<result property="userId" column="user_id"/>
 	</resultMap>
 	
-	<insert id="write" parameterType="com.example.bulletinboard.entity.Board" useGeneratedKeys="true" keyProperty="board_id">
+	<insert id="write" parameterType="hashmap" >
 		insert into board_tb
 		values (0, #{title}, #{content}, #{userId})
 	</insert>
 	
+	<select id="board" resultMap="BoardMap">
+		select
+			board_id,
+			board_title
+		from
+			board_tb
+	</select>
 </mapper>

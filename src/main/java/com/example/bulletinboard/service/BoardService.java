@@ -1,12 +1,15 @@
 package com.example.bulletinboard.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.example.bulletinboard.dto.board.BoardResDto;
 import com.example.bulletinboard.dto.board.WriteReqDto;
 import com.example.bulletinboard.repository.BoardRepository;
 import com.example.bulletinboard.security.principalUser;
@@ -39,12 +42,22 @@ public class BoardService {
 				return boardRepository.write(map);
 			}
 			return 0;
-			
+				
 			}else {
 				
 				return 0;
 			}
+	}
+	
+	public List<BoardResDto> board(){
 		
+		List<BoardResDto> responseList = new ArrayList<>();
+		
+		boardRepository.board().forEach(board -> {
+			responseList.add(board.toDto());
+		});
+		
+		return responseList;
 	}
 	
 }

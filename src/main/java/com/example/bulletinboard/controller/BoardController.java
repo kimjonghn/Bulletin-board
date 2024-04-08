@@ -3,6 +3,7 @@ package com.example.bulletinboard.controller;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,5 +25,9 @@ public class BoardController {
 	public ResponseEntity<?> write(@RequestBody WriteReqDto writeReqDto){
 		System.out.println(writeReqDto);
 		return ResponseEntity.ok().body(boardService.write(writeReqDto));
+	}
+	@GetMapping("")
+	public ResponseEntity<?> board(){
+		return ResponseEntity.ok().body(boardService.board());
 	}
 }
