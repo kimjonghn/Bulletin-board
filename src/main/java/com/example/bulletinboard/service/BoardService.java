@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.bulletinboard.dto.board.BoardResDto;
+import com.example.bulletinboard.dto.board.ViewPostResDto;
 import com.example.bulletinboard.dto.board.WriteReqDto;
 import com.example.bulletinboard.repository.BoardRepository;
 import com.example.bulletinboard.security.principalUser;
@@ -38,6 +39,7 @@ public class BoardService {
 				map.put("title" , writeReqDto.getTitle());
 				map.put("content" , writeReqDto.getContent());
 				map.put("userId", principalUser.getUserId());
+				map.put("name" , principalUser.getName());
 				
 				return boardRepository.write(map);
 			}
@@ -59,5 +61,7 @@ public class BoardService {
 		
 		return responseList;
 	}
-	
+	public ViewPostResDto viewPost(int boardId){
+		return boardRepository.viewPost(boardId).toGetDto();
+	}
 }

@@ -12,4 +12,5 @@ public interface BoardRepository {
 	
 	public int write(Map<String, Object> map);
 	public List<Board> board();
+	public Board viewPost(int boardId);
 }

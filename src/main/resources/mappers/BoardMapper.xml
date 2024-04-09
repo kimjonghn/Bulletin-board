@@ -7,11 +7,12 @@
 		<result property="title" column="board_title"/>
 		<result property="content" column="board_content"/>
 		<result property="userId" column="user_id"/>
+		<result property="name" column="name"/>
 	</resultMap>
 	
 	<insert id="write" parameterType="hashmap" >
 		insert into board_tb
-		values (0, #{title}, #{content}, #{userId})
+		values (0, #{title}, #{content}, #{userId}, #{name})
 	</insert>
 	
 	<select id="board" resultMap="BoardMap">
@@ -20,5 +21,17 @@
 			board_title
 		from
 			board_tb
+	</select>
+	
+	<select id="viewPost" resultMap="BoardMap" parameterType="Integer">
+		select
+			board_title,
+			board_content,
+			user_Id,
+			name
+		from
+			board_tb
+		where
+			board_id = #{BoardId}
 	</select>
 </mapper>
