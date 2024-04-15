@@ -16,6 +16,7 @@ import com.example.bulletinboard.exception.CustomException;
 import com.example.bulletinboard.exception.ErrorMap;
 import com.example.bulletinboard.repository.UserRepository;
 import com.example.bulletinboard.security.JwtTokenProvider;
+import com.example.bulletinboard.security.principalUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -70,6 +71,16 @@ public class AuthenticationService implements UserDetailsService{
 		return jwtTokenProvider.validateToken(jwtTokenProvider.getToken(accessToken));
 	}
 	
+	public principalUser userInfo(String accessToken) {
+		String email = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken)).get("email").toString();
+		User userEntity = userRepository.findUserByEmail(email);
+		return userEntity.toPrincipal();
+	}
+	
+	public int userDelete(User user) {
+		userRepository.userDelete(user);
+		return userRepository.userDelete(user);
+	}
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User userEntity = userRepository.findUserByEmail(username);

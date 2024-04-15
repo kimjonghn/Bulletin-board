@@ -52,4 +52,10 @@
 		insert into authority_tb
 		values (0, #{userId}, #{roleId})
 	</insert>
+	<delete id="userDelete" parameterType="com.example.bulletinboard.entity.User">
+		delete from
+			user_tb
+		where
+			user_id = #{userId}
+	</delete>
 </mapper>

@@ -2,9 +2,11 @@
 
 import javax.validation.Valid;
 
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.bulletinboard.aop.annotation.ValidAspect;
 import com.example.bulletinboard.dto.auth.LoginReqDto;
 import com.example.bulletinboard.dto.auth.SignupReqDto;
+import com.example.bulletinboard.entity.User;
 import com.example.bulletinboard.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,5 +47,15 @@ public class AuthenticationController {
 	public ResponseEntity<?> authenticate(@RequestHeader(value="Authorization")String accessToken){
 
 		return ResponseEntity.ok().body(authenticationService.authenticate(accessToken));
+	}
+	@GetMapping("/userInfo")
+	public ResponseEntity<?> userInfo(@RequestHeader(value="Authorization")String accessToken){
+		
+		return ResponseEntity.ok().body(authenticationService.userInfo(accessToken));
+	}
+	@DeleteMapping("/delete")
+	public ResponseEntity<?> userDelete(@RequestBody User user){
+		
+		return ResponseEntity.ok().body(authenticationService.userDelete(user));
 	}
 }
