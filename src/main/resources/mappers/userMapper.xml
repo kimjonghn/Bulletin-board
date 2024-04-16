@@ -58,4 +58,13 @@
 		where
 			user_id = #{userId}
 	</delete>
+	<select id="boardUserId" parameterType="String" resultType="Integer">
+		select 
+			user_id
+		from
+			board_tb
+		where
+			board_id = #{boardId}
+			
+	</select>
 </mapper>

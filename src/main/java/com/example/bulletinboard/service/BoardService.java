@@ -64,4 +64,17 @@ public class BoardService {
 	public ViewPostResDto viewPost(int boardId){
 		return boardRepository.viewPost(boardId).toGetDto();
 	}
+	
+	public int boardDelete(int boardId) {
+		return boardRepository.boardDelete(boardId);
+	}
+	
+	public int modify(int boardId , WriteReqDto writeReqDto) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("boardId", boardId);
+		map.put("title", writeReqDto.getTitle());
+		map.put("content", writeReqDto.getContent());
+		
+		return boardRepository.modify(map);
+	}
 }

@@ -34,4 +34,19 @@
 		where
 			board_id = #{BoardId}
 	</select>
+	<delete id="boardDelete" parameterType="Integer">
+		delete from
+			board_tb
+		where
+			board_id = #{boardId}
+	</delete>
+	<update id="modify" parameterType="hashMap">
+		update
+			board_tb
+		set
+			board_title = #{title} ,
+			board_content = #{content}
+		where
+			board_id = #{boardId}
+	</update>
 </mapper>

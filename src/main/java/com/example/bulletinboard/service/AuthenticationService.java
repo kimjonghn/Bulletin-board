@@ -76,6 +76,17 @@ public class AuthenticationService implements UserDetailsService{
 		User userEntity = userRepository.findUserByEmail(email);
 		return userEntity.toPrincipal();
 	}
+	public boolean usercheck(String accessToken, String boardId) {
+		String email = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken)).get("email").toString();
+//		userRepository.findUserByEmail(email);
+//		System.out.println("userId" + userRepository.findUserByEmail(email).getUserId());
+//		userRepository.boardUserId(boardId);
+//		System.out.println("boardUserId : " + userRepository.boardUserId(boardId));
+		if(userRepository.findUserByEmail(email).getUserId() == userRepository.boardUserId(boardId)) {
+			return true;
+		}
+		return false;
+	}
 	
 	public int userDelete(User user) {
 		userRepository.userDelete(user);

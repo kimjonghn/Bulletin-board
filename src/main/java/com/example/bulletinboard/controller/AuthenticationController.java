@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bulletinboard.aop.annotation.ValidAspect;
@@ -57,5 +58,12 @@ public class AuthenticationController {
 	public ResponseEntity<?> userDelete(@RequestBody User user){
 		
 		return ResponseEntity.ok().body(authenticationService.userDelete(user));
+	}
+	@GetMapping("/userCheck")
+	public ResponseEntity<?> userCheck(
+			@RequestHeader(value = "Authorization")String accessToken,
+			@RequestParam(value = "boardId") String boardId){
+		;
+		return ResponseEntity.ok().body(authenticationService.usercheck(accessToken, boardId));
 	}
 }
