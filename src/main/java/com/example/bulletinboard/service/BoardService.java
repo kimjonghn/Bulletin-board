@@ -10,10 +10,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.bulletinboard.dto.board.BoardResDto;
+import com.example.bulletinboard.dto.board.CommentResDto;
 import com.example.bulletinboard.dto.board.ViewPostResDto;
 import com.example.bulletinboard.dto.board.WriteReqDto;
+import com.example.bulletinboard.entity.Comment;
 import com.example.bulletinboard.repository.BoardRepository;
+import com.example.bulletinboard.repository.UserRepository;
+import com.example.bulletinboard.security.JwtTokenProvider;
 import com.example.bulletinboard.security.principalUser;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +27,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardService {
 	
+	private final JwtTokenProvider jwtTokenProvider;
 	private final BoardRepository boardRepository;
+	private final UserRepository userRepository;
 	
 	public int write(WriteReqDto writeReqDto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();  //현재 로그인한 사용자 정보
@@ -76,5 +84,29 @@ public class BoardService {
 		map.put("content", writeReqDto.getContent());
 		
 		return boardRepository.modify(map);
+	}
+	public int comment(int boardId, String accessToken, String comment) {
+		String email = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken)).get("email").toString();
+		int userId = userRepository.findUserByEmail(email).getUserId();
+		String userName = userRepository.findUserByEmail(email).getName();
+		
+		JsonObject jObject = JsonParser.parseString(comment).getAsJsonObject();
+		String commentText = jObject.get("comment").getAsString();
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("comment", commentText);
+		map.put("userId", userId);
+		map.put("userName", userName);
+		map.put("boardId", boardId);
+		
+		return boardRepository.comment(map);
+	}
+	public List<CommentResDto> getComment(int boardId) {
+		
+		List<CommentResDto> commentList = new ArrayList<>();
+		boardRepository.getComment(boardId).forEach(comment -> {
+			commentList.add(comment.toDto());
+		});
+		return commentList;
 	}
 }

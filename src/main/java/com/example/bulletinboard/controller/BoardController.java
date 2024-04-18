@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,5 +47,17 @@ public class BoardController {
 	public ResponseEntity<?> modify(@PathVariable int boardId, @RequestBody WriteReqDto writeReqDto){
 //		boardService.modify(boardId, writeReqDto);
 		return ResponseEntity.ok().body(boardService.modify(boardId, writeReqDto));
+	}
+	@PostMapping("/comment/{boardId}")
+	public ResponseEntity<?> comment(@RequestHeader(value="Authorization")String accessToken,
+				@PathVariable int boardId, @RequestBody String comment ){
+		
+		return ResponseEntity.ok().body(boardService.comment(boardId, accessToken, comment));
+	}
+	@GetMapping("/getComment/{boardId}")
+	public ResponseEntity<?> getComment(@PathVariable int boardId){
+		
+		
+		return ResponseEntity.ok().body(boardService.getComment(boardId));
 	}
 }

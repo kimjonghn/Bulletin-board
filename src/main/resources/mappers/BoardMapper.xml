@@ -10,6 +10,14 @@
 		<result property="name" column="name"/>
 	</resultMap>
 	
+	<resultMap type="com.example.bulletinboard.entity.Comment" id="commentMap">
+		<id column="comment_id" property="commentId"/> 
+		<result column="comment_content" property="commentContent"/>
+		<result column="user_id" property="userId"/>
+		<result column="name" property="name"/>
+		<result column="board_id" property="boardId"/>
+	</resultMap>
+	
 	<insert id="write" parameterType="hashmap" >
 		insert into board_tb
 		values (0, #{title}, #{content}, #{userId}, #{name})
@@ -49,4 +57,21 @@
 		where
 			board_id = #{boardId}
 	</update>
+	<insert id="comment" parameterType="hashMap">
+		insert into comment_tb
+		values (0, #{comment},#{userId}, #{userName}, #{boardId} )
+			
+	</insert>
+	<select id="getComment" resultMap="commentMap" parameterType="Integer">
+		select
+			comment_id,
+			comment_content,
+			user_id,
+			name,
+			board_id
+		from
+			comment_tb
+		where
+			board_id = #{boardId}
+	</select>
 </mapper>
