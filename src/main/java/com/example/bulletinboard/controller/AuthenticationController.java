@@ -49,6 +49,13 @@ public class AuthenticationController {
 
 		return ResponseEntity.ok().body(authenticationService.authenticate(accessToken));
 	}
+	
+	@GetMapping("/findemail")
+	public ResponseEntity<?> findEmail(@RequestParam String phone){
+		
+		return ResponseEntity.ok().body(authenticationService.findEmail(phone));
+	}
+	
 	@GetMapping("/userInfo")
 	public ResponseEntity<?> userInfo(@RequestHeader(value="Authorization")String accessToken){
 		

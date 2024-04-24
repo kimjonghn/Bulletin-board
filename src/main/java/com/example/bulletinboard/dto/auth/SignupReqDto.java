@@ -27,11 +27,15 @@ public class SignupReqDto {
 	
 	private String checkPassword;
 	
+	@NotBlank(message = "연락처를 입력하세요")
+	private String phone;
+	
 	public User toEntity() {
 		return User.builder()
 				.email(email)
 				.password(new BCryptPasswordEncoder().encode(password))
 				.name(name)
+				.phone(phone)
 				.build();
 	}
 }

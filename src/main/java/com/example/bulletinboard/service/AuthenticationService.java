@@ -45,7 +45,6 @@ public class AuthenticationService implements UserDetailsService{
 		User user = signupReqDto.toEntity();
 		
 		userRepository.saveUser(user);
-		System.out.println(user);
 		
 		userRepository.saveAuthority(Authority.builder()
 				.userId(user.getUserId())
@@ -61,14 +60,29 @@ public class AuthenticationService implements UserDetailsService{
 		UsernamePasswordAuthenticationToken authenticationToken =
 				new UsernamePasswordAuthenticationToken(loginReqDto.getEmail(), loginReqDto.getPassword());
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//		return null;
+
 		return jwtTokenProvider.generateToken(authentication);
 	}
-	//jwtTokenProvider 객체를 사용하여 인증된 사용자에 대한 JWT 토큰을 생성합니다. JWT 토큰은 클라이언트에게 반환되고, 이를 사용하여 사용자가 인증된 세션을 유지하거나 보호된 리소스에 접근할 수 있게 됩니다.
-	// jwt 토큰을 생성하여 반납하는 역할
+
 	
 	public boolean authenticate(String accessToken) {
 		return jwtTokenProvider.validateToken(jwtTokenProvider.getToken(accessToken));
+	}
+	
+	public String findEmail(String phone) {
+			if(phone == null) {
+				throw new CustomException("Undefind User", 
+						ErrorMap.builder().put("error", "사용자를 찾을 수 없습니다.").build());
+			}
+			User userEntity = userRepository.findEmail(phone);			
+			
+			if (userEntity == null) {
+				throw new CustomException("Undefind User", 
+						ErrorMap.builder().put("error", "사용자를 찾을 수 없습니다.").build());
+			}
+			
+			return userEntity.getEmail();
+		
 	}
 	
 	public principalUser userInfo(String accessToken) {
@@ -78,10 +92,7 @@ public class AuthenticationService implements UserDetailsService{
 	}
 	public boolean usercheck(String accessToken, String boardId) {
 		String email = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken)).get("email").toString();
-//		userRepository.findUserByEmail(email);
-//		System.out.println("userId" + userRepository.findUserByEmail(email).getUserId());
-//		userRepository.boardUserId(boardId);
-//		System.out.println("boardUserId : " + userRepository.boardUserId(boardId));
+
 		if(userRepository.findUserByEmail(email).getUserId() == userRepository.boardUserId(boardId)) {
 			return true;
 		}

@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ErrorResponseDto<T> {
 	private String message;
-	private T errorData; //(errorMap)
+	private T errorData; 
 }

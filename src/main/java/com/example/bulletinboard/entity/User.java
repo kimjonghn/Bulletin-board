@@ -18,6 +18,7 @@ public class User {
 	private String email;
 	private String password;	
 	private String name;
+	private String phone;
 	
 	private List<Authority> authorities;
 	
@@ -27,6 +28,7 @@ public class User {
 				.email(email)
 				.password(password)
 				.name(name)
+				.phone(phone)
 				.authorities(authorities)
 				.build();
 	}

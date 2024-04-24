@@ -10,7 +10,7 @@ public class CustomException extends RuntimeException{
 	private static final long serialVersionUID = -6199706532041231569L;
 	private Map<String, String> errorMap;
 	
-	public CustomException(String message) { //RuntimeException 에 message를 전달
+	public CustomException(String message) { 
 		super(message);
 	}
 	public CustomException(String message, Map<String, String> errorMap) {

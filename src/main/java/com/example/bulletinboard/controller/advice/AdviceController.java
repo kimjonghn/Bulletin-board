@@ -11,8 +11,8 @@ import com.example.bulletinboard.exception.CustomException;
 
 @RestControllerAdvice
 public class AdviceController {
-	@ExceptionHandler(CustomException.class) //CustomException예외가 발생하면 실행된다
-	public ResponseEntity<?> customException(CustomException e) { // throw new CustomException("Validation Failed", errorMap); => e 
+	@ExceptionHandler(CustomException.class) 
+	public ResponseEntity<?> customException(CustomException e) { 
 		
 		return ResponseEntity.badRequest().body(new ErrorResponseDto<>(e.getMessage(), e.getErrorMap()));
 	}

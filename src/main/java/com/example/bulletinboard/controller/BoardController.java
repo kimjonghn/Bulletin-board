@@ -26,7 +26,6 @@ public class BoardController {
 	
 	@PostMapping("/write")
 	public ResponseEntity<?> write(@RequestBody WriteReqDto writeReqDto){
-		System.out.println(writeReqDto);
 		return ResponseEntity.ok().body(boardService.write(writeReqDto));
 	}
 	@GetMapping("")

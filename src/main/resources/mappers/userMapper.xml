@@ -8,6 +8,7 @@
 		<result property="email" column="email"/>
 		<result property="password" column="password"/>
 		<result property="name" column="name"/>
+		<result property="phone" column="phone"/>		
 		<collection property="authorities" javaType="list" resultMap="AuthorityMap"/>
 	</resultMap>
 	
@@ -29,6 +30,7 @@
 		    ut.email,
 		    ut.password,
 		    ut.name,
+		    ut.phone,
 		    
 		    at.authority_id,
 		    at.user_id,
@@ -46,7 +48,7 @@
 	
 	<insert id="saveUser" parameterType="com.example.bulletinboard.entity.User" useGeneratedKeys="true" keyProperty="userId">
 		insert into user_tb
-		values (0, #{email}, #{password}, #{name})
+		values (0, #{email}, #{password}, #{name}, #{phone})
 	</insert>
 	<insert id="saveAuthority" parameterType="com.example.bulletinboard.entity.Authority">
 		insert into authority_tb
@@ -58,7 +60,7 @@
 		where
 			user_id = #{userId}
 	</delete>
-	<select id="boardUserId" parameterType="String" resultType="Integer">
+	<select id="boardUserId" parameterType="String" >
 		select 
 			user_id
 		from
@@ -66,5 +68,13 @@
 		where
 			board_id = #{boardId}
 			
+	</select>
+	<select id="findEmail" parameterType="String" resultMap="UserMap">
+		select
+			email
+		from
+			user_tb
+		where
+			phone = #{phone}
 	</select>
 </mapper>

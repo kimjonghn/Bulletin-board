@@ -32,8 +32,8 @@ public class BoardService {
 	private final UserRepository userRepository;
 	
 	public int write(WriteReqDto writeReqDto) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();  //현재 로그인한 사용자 정보
-		principalUser principalUser = (principalUser) authentication.getPrincipal(); //현재 인증된 사용자
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();  
+		principalUser principalUser = (principalUser) authentication.getPrincipal(); 
 		
 		String title = writeReqDto.getTitle();
 		String content = writeReqDto.getContent();
