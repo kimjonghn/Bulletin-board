@@ -1,5 +1,7 @@
 package com.example.bulletinboard.repository;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.bulletinboard.entity.Authority;
@@ -14,5 +16,7 @@ public interface UserRepository {
 	public int userDelete(User user);
 	public int boardUserId(String boardId);
 	public User findEmail(String phone);
+	public int findPassword(Map<String, Object> map);
+	public void passwordChange(User user);
 	
 }

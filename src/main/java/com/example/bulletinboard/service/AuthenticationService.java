@@ -1,14 +1,18 @@
 package com.example.bulletinboard.service;
 						
+import java.util.Map;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.bulletinboard.dto.auth.LoginReqDto;
+import com.example.bulletinboard.dto.auth.PasswordUpdateDto;
 import com.example.bulletinboard.dto.auth.SignupReqDto;
 import com.example.bulletinboard.entity.Authority;
 import com.example.bulletinboard.entity.User;
@@ -70,10 +74,6 @@ public class AuthenticationService implements UserDetailsService{
 	}
 	
 	public String findEmail(String phone) {
-			if(phone == null) {
-				throw new CustomException("Undefind User", 
-						ErrorMap.builder().put("error", "사용자를 찾을 수 없습니다.").build());
-			}
 			User userEntity = userRepository.findEmail(phone);			
 			
 			if (userEntity == null) {
@@ -83,6 +83,27 @@ public class AuthenticationService implements UserDetailsService{
 			
 			return userEntity.getEmail();
 		
+	}
+	public int findPassword(Map<String, Object> map) {
+		if(userRepository.findPassword(map) != 0) {
+			return userRepository.findPassword(map);
+		}
+		return 0;
+		
+	}
+	public void passwordChange(int userId, PasswordUpdateDto passwordUpdateDto) {
+		
+		if(misMathUpdatePassword(passwordUpdateDto)) {
+			throw new CustomException("error",
+					ErrorMap.builder().put("password", "비밀번호가 일치하지 않습니다.").build());
+		}
+		userRepository.passwordChange(User.builder()
+			.userId(userId)
+			.password(new BCryptPasswordEncoder().encode(passwordUpdateDto.getPassword()))
+			.build());
+	}
+	public boolean misMathUpdatePassword(PasswordUpdateDto passwordUpdateDto) {
+		return !passwordUpdateDto.getPassword().equals(passwordUpdateDto.getCheckPassword());
 	}
 	
 	public principalUser userInfo(String accessToken) {

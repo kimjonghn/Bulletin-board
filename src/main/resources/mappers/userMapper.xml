@@ -77,4 +77,21 @@
 		where
 			phone = #{phone}
 	</select>
+	<select id="findPassword" parameterType="Map" resultType="Integer">
+		select
+			user_id
+		from
+			user_tb
+		where
+			email = #{email} AND
+			phone = #{phone}
+	</select>
+	<update id="passwordChange" parameterType="com.example.bulletinboard.entity.User">
+		update
+			user_tb
+		set
+			password = #{password}
+		where
+			user_id = #{userId}
+	</update>
 </mapper>

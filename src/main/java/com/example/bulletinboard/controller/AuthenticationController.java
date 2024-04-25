@@ -1,5 +1,7 @@
  package com.example.bulletinboard.controller;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.apache.ibatis.annotations.Delete;
@@ -8,7 +10,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bulletinboard.aop.annotation.ValidAspect;
 import com.example.bulletinboard.dto.auth.LoginReqDto;
+import com.example.bulletinboard.dto.auth.PasswordUpdateDto;
 import com.example.bulletinboard.dto.auth.SignupReqDto;
 import com.example.bulletinboard.entity.User;
 import com.example.bulletinboard.service.AuthenticationService;
@@ -54,6 +59,18 @@ public class AuthenticationController {
 	public ResponseEntity<?> findEmail(@RequestParam String phone){
 		
 		return ResponseEntity.ok().body(authenticationService.findEmail(phone));
+	}
+	
+	@GetMapping("/findpassword")
+	public ResponseEntity<?> findEmail(@RequestParam Map<String, Object> map){
+		
+		return ResponseEntity.ok().body(authenticationService.findPassword(map));
+	}
+	@PutMapping("/updatepassword/{userid}")
+	public ResponseEntity<?> passwordchange(@PathVariable int userid ,@RequestBody PasswordUpdateDto passwordUpdateDto){
+
+		authenticationService.passwordChange(userid, passwordUpdateDto);
+		return ResponseEntity.ok().body(null);
 	}
 	
 	@GetMapping("/userInfo")
