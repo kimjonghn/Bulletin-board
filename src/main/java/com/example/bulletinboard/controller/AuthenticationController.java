@@ -39,6 +39,7 @@ public class AuthenticationController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto , BindingResult bindingResult){
 		authenticationService.checkDuplicatedEmail(signupReqDto.getEmail());
+		authenticationService.checkDuplicatedPhone(signupReqDto.getPhone());
 		authenticationService.signup(signupReqDto);
 		return ResponseEntity.ok().body(true);
 	}

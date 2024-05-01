@@ -15,4 +15,5 @@ public class BoardResDto {
 	private String content;
 	private int userId;
 	private String name;
+	private String time;
 }

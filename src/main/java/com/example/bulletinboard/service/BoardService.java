@@ -1,5 +1,6 @@
 package com.example.bulletinboard.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,12 +43,21 @@ public class BoardService {
 			
 			if(content != null && !content.isEmpty() && content.length() >= 2) {
 				
+				LocalDateTime localDateTime = LocalDateTime.now();
+				String todayDateTime = String.format("%04d-%02d-%02d", 
+														localDateTime.getYear(),
+														localDateTime.getMonthValue(),
+				                                        localDateTime.getDayOfMonth());
+				
 				Map<String, Object> map = new HashMap<>();
 				
 				map.put("title" , writeReqDto.getTitle());
 				map.put("content" , writeReqDto.getContent());
 				map.put("userId", principalUser.getUserId());
 				map.put("name" , principalUser.getName());
+				map.put("time", todayDateTime);
+				
+				
 				
 				return boardRepository.write(map);
 			}

@@ -46,6 +46,15 @@
 			ut.email = #{email}
 	</select>
 	
+	<select id="findUserByPhone" resultMap="UserMap">
+		select
+			phone
+		from
+			user_tb
+		where
+			phone = #{phone}
+	</select>
+	
 	<insert id="saveUser" parameterType="com.example.bulletinboard.entity.User" useGeneratedKeys="true" keyProperty="userId">
 		insert into user_tb
 		values (0, #{email}, #{password}, #{name}, #{phone})
@@ -60,7 +69,7 @@
 		where
 			user_id = #{userId}
 	</delete>
-	<select id="boardUserId" parameterType="String" >
+	<select id="boardUserId" parameterType="String" resultType="Integer">
 		select 
 			user_id
 		from

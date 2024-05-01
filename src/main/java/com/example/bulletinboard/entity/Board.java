@@ -18,6 +18,7 @@ public class Board {
 	private String content;
 	private int userId;
 	private String name;
+	private String time;
 
 	public BoardResDto toDto() {
 		return BoardResDto.builder()
@@ -26,6 +27,7 @@ public class Board {
 				.content(content)
 				.userId(userId)
 				.name(name)
+				.time(time)
 				.build();
 	}
 	public ViewPostResDto toGetDto() {

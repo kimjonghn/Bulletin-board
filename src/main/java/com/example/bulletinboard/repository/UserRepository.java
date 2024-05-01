@@ -11,6 +11,7 @@ import com.example.bulletinboard.entity.User;
 public interface UserRepository {
 	
 	public User findUserByEmail(String email);
+	public User findUserByPhone(String phone);
 	public int saveUser(User user);
 	public int saveAuthority(Authority authority);
 	public int userDelete(User user);

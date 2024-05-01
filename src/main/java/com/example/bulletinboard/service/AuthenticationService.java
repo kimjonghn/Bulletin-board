@@ -39,6 +39,13 @@ public class AuthenticationService implements UserDetailsService{
 		}
 	}
 	
+	public void checkDuplicatedPhone(String phone) {
+		if(userRepository.findUserByPhone(phone) != null) {
+			throw new CustomException("Duplicated Phone", 
+					ErrorMap.builder().put("phone", "사용중인 전화번호입니다").build());
+		}
+	}
+	
 	public void signup(SignupReqDto signupReqDto) {
 		
 		if(misMathPassword(signupReqDto)) {
