@@ -76,4 +76,21 @@
 		where
 			board_id = #{boardId}
 	</select>
+	
+	<select id="commentUserCheck" parameterType="hashMap" resultMap="commentMap">
+		select
+			comment_id
+		from
+			comment_tb
+		where
+			user_id = #{userId}	and
+			board_id = #{boardId} 
+	</select>
+	<delete id="commentDelete" parameterType="hashMap">
+		delete from
+			comment_tb
+		where
+			board_id = #{boardId} and
+			comment_id = #{deleteCommentId}
+	</delete>
 </mapper>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bulletinboard.dto.board.WriteReqDto;
@@ -53,10 +54,23 @@ public class BoardController {
 		
 		return ResponseEntity.ok().body(boardService.comment(boardId, accessToken, comment));
 	}
-	@GetMapping("/getComment/{boardId}")
+	@GetMapping("/getcomment/{boardId}")
 	public ResponseEntity<?> getComment(@PathVariable int boardId){
 		
 		
 		return ResponseEntity.ok().body(boardService.getComment(boardId));
 	}
+	@GetMapping("/comment/usercheck/{boardId}")
+	public ResponseEntity<?> commentUserCheck(@RequestHeader(value="Authorization")String accessToken, @PathVariable int boardId){
+		
+		
+		return ResponseEntity.ok().body(boardService.commentUseCheck(accessToken, boardId));
+	}
+	
+	@DeleteMapping("commentdelete/{boardId}/{deleteCommentId}")
+	public ResponseEntity<?> commentDelete(@PathVariable int boardId, @PathVariable int deleteCommentId){
+		
+		return ResponseEntity.ok().body(boardService.commentDelete(boardId, deleteCommentId));
+}
+	
 }

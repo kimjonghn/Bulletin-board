@@ -119,4 +119,24 @@ public class BoardService {
 		});
 		return commentList;
 	}
+	
+	public List<Comment> commentUseCheck(String accessToken, int boardId) {
+		String email = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken)).get("email").toString();
+		int userId = userRepository.findUserByEmail(email).getUserId();
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("boardId", boardId);
+		
+		return boardRepository.commentUserCheck(map);
+	}
+	public int commentDelete(int boardId, int deleteCommentId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("boardId", boardId);
+		map.put("deleteCommentId", deleteCommentId);
+		
+		
+		
+		return boardRepository.commentDelete(map);
+	}
 }

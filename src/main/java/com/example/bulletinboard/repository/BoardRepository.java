@@ -18,4 +18,6 @@ public interface BoardRepository {
 	public int modify(Map<String, Object> map );
 	public int comment(Map<String , Object>mmap );
 	public List<Comment> getComment(int boardId);
+	public List<Comment> commentUserCheck(Map<String, Object> map);
+	public int commentDelete(Map<String, Object> map);
 }
