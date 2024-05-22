@@ -19,6 +19,7 @@ public class Board {
 	private int userId;
 	private String name;
 	private String time;
+	private String images;
 
 	public BoardResDto toDto() {
 		return BoardResDto.builder()
@@ -37,6 +38,7 @@ public class Board {
 				.content(content)
 				.userId(userId)
 				.name(name)
+				.images(images.toString())
 				.build();
 	}
 }

@@ -9,6 +9,7 @@
 		<result property="userId" column="user_id"/>
 		<result property="name" column="name"/>
 		<result property="time" column="board_time"/>
+		<result property="images" column="board_img"/>
 	</resultMap>
 	
 	<resultMap type="com.example.bulletinboard.entity.Comment" id="commentMap">
@@ -21,7 +22,7 @@
 	
 	<insert id="write" parameterType="hashmap" >
 		insert into board_tb
-		values (0, #{title}, #{content}, #{userId}, #{name} , #{time})
+		values (0, #{title}, #{content}, #{userId}, #{name} , #{time}, #{imageFileNames})
 	</insert>
 	
 	<select id="board" resultMap="BoardMap">
@@ -38,7 +39,8 @@
 			board_title,
 			board_content,
 			user_Id,
-			name
+			name,
+			board_img
 		from
 			board_tb
 		where

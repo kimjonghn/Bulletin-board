@@ -1,5 +1,8 @@
 package com.example.bulletinboard.service;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +12,7 @@ import java.util.Map;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bulletinboard.dto.board.BoardResDto;
 import com.example.bulletinboard.dto.board.CommentResDto;
@@ -22,6 +26,7 @@ import com.example.bulletinboard.security.principalUser;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -38,9 +43,9 @@ public class BoardService {
 		
 		String title = writeReqDto.getTitle();
 		String content = writeReqDto.getContent();
+		List<MultipartFile> images = writeReqDto.getImages();
 		
 		if(title != null && !title.isEmpty() && title.length() >= 2) {
-			
 			if(content != null && !content.isEmpty() && content.length() >= 2) {
 				
 				LocalDateTime localDateTime = LocalDateTime.now();
@@ -57,18 +62,37 @@ public class BoardService {
 				map.put("name" , principalUser.getName());
 				map.put("time", todayDateTime);
 				
-				
-				
+				 if (images != null && !images.isEmpty()) {
+				        List<String> imageFileNames = new ArrayList<>();
+				        for (MultipartFile image : images) {
+				            try {
+				                String originalFilename = image.getOriginalFilename();
+				                if (originalFilename != null) {
+				                    String fileName = originalFilename.substring(originalFilename.lastIndexOf("\\") + 1);
+				                    String filePath = "C:\\junil\\jonghwan\\workspace\\bulletin_Board\\Bulletin-Board_pront\\public\\images\\" + fileName;
+				                    File dest = new File(filePath);
+				                    if (!dest.getParentFile().exists()) {
+				                        dest.getParentFile().mkdirs();
+				                    }
+				                    image.transferTo(dest);
+				                    imageFileNames.add(fileName);  // 저장한 파일 이름을 리스트에 추가
+				                }
+						}catch (Exception e) {
+							e.printStackTrace();
+							return 0;
+						}
+					}   
+				    map.put("imageFileNames", String.join(",", imageFileNames));
+				}
 				return boardRepository.write(map);
 			}
 			return 0;
 				
 			}else {
-				
 				return 0;
-			}
-	}
+			}}
 	
+
 	public List<BoardResDto> board(){
 		
 		List<BoardResDto> responseList = new ArrayList<>();
