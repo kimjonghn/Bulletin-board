@@ -110,15 +110,117 @@ public class BoardService {
 	public int boardDelete(int boardId) {
 		return boardRepository.boardDelete(boardId);
 	}
-	
-	public int modify(int boardId , WriteReqDto writeReqDto) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("boardId", boardId);
-		map.put("title", writeReqDto.getTitle());
-		map.put("content", writeReqDto.getContent());
-		
-		return boardRepository.modify(map);
+	public int modify(int boardId, WriteReqDto writeReqDto) {
+	    String title = writeReqDto.getTitle();
+	    String content = writeReqDto.getContent();
+	    List<MultipartFile> images = writeReqDto.getImages();
+	    List<String> existingImageFileNames = writeReqDto.getExistingImages();
+	    
+	    if (title != null && !title.isEmpty() && title.length() >= 2) {
+	        if (content != null && !content.isEmpty() && content.length() >= 2) {
+	            LocalDateTime localDateTime = LocalDateTime.now();
+	            String todayDateTime = String.format("%04d-%02d-%02d", 
+	                                                 localDateTime.getYear(),
+	                                                 localDateTime.getMonthValue(),
+	                                                 localDateTime.getDayOfMonth());
+	            
+	            Map<String, Object> map = new HashMap<>();
+	            map.put("boardId", boardId);
+	            map.put("title", title);
+	            map.put("content", content);
+	            map.put("time", todayDateTime);
+	            
+	            // 기존 이미지 파일 이름 리스트가 null이면 빈 리스트로 초기화
+	            List<String> imageFileNames = existingImageFileNames != null ? new ArrayList<>(existingImageFileNames) : new ArrayList<>();
+	            
+	            if (images != null && !images.isEmpty()) {
+	                for (MultipartFile image : images) {
+	                    try {
+	                        String originalFilename = image.getOriginalFilename();
+	                        if (originalFilename != null) {
+	                            String fileName = originalFilename.substring(originalFilename.lastIndexOf("\\") + 1);
+	                            String filePath = "C:\\junil\\jonghwan\\workspace\\bulletin_Board\\Bulletin-Board_pront\\public\\images\\" + fileName;
+	                            File dest = new File(filePath);
+	                            if (!dest.getParentFile().exists()) {
+	                                dest.getParentFile().mkdirs();
+	                            }
+	                            image.transferTo(dest);
+	                            imageFileNames.add(fileName);  // 저장한 파일 이름을 리스트에 추가
+	                        }
+	                    } catch (Exception e) {
+	                        e.printStackTrace();
+	                        return 0;
+	                    }
+	                }
+	            }
+	            map.put("imageFileNames", String.join(",", imageFileNames));
+	            return boardRepository.modify(map);
+	        } else {
+	            return 0;
+	        }
+	    } else {
+	        return 0;
+	    }
 	}
+
+//	public int modify(int boardId , WriteReqDto writeReqDto) {
+//		String title = writeReqDto.getTitle();
+//		String content = writeReqDto.getContent();
+//		List<MultipartFile> images = writeReqDto.getImages();
+//		List<String> existingImageFileNames = writeReqDto.getExistingImages();
+//		
+//		if(title != null && !title.isEmpty() && title.length() >= 2) {
+//			if(content != null && !content.isEmpty() && content.length() >= 2) {
+//				LocalDateTime localDateTime = LocalDateTime.now();
+//				String todayDateTime = String.format("%04d-%02d-%02d", 
+//														localDateTime.getYear(),
+//														localDateTime.getMonthValue(),
+//				                                        localDateTime.getDayOfMonth());
+//				
+//				Map<String, Object> map = new HashMap<>();
+//				map.put("boardId", boardId);
+//				map.put("title" , writeReqDto.getTitle());
+//				map.put("content" , writeReqDto.getContent());
+//				map.put("time", todayDateTime);
+//				
+//				List<String> imageFileNames = new ArrayList<>(existingImageFileNames);
+//				
+//				 if (images != null && !images.isEmpty()) {
+//				        for (MultipartFile image : images) {
+//				            try {
+//				                String originalFilename = image.getOriginalFilename();
+//				                if (originalFilename != null) {
+//				                    String fileName = originalFilename.substring(originalFilename.lastIndexOf("\\") + 1);
+//				                    String filePath = "C:\\junil\\jonghwan\\workspace\\bulletin_Board\\Bulletin-Board_pront\\public\\images\\" + fileName;
+//				                    File dest = new File(filePath);
+//				                    if (!dest.getParentFile().exists()) {
+//				                        dest.getParentFile().mkdirs();
+//				                    }
+//				                    image.transferTo(dest);
+//				                    imageFileNames.add(fileName);  // 저장한 파일 이름을 리스트에 추가
+//				                }
+//						}catch (Exception e) {
+//							e.printStackTrace();
+//							return 0;
+//						}
+//					}   
+//				        System.out.println("imageFileNames : " + imageFileNames);
+//				    map.put("imageFileNames", String.join(",", imageFileNames));
+//				}else {
+//					map.put("imageFileNames", String.join(",", imageFileNames));
+//					System.out.println(imageFileNames);
+//				} 
+//				 
+//				System.out.println(map);
+//				return boardRepository.modify(map);
+////				return 0;
+//			}
+//			return 0;
+//				
+//			}else {
+//				return 0;
+//			}}
+	
 	public int comment(int boardId, String accessToken, String comment) {
 		String email = jwtTokenProvider.getClaims(jwtTokenProvider.getToken(accessToken)).get("email").toString();
 		int userId = userRepository.findUserByEmail(email).getUserId();

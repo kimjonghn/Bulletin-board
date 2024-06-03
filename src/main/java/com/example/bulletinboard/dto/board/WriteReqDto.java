@@ -13,4 +13,5 @@ public class WriteReqDto {
 	private String title;
 	private String content;
 	private List<MultipartFile> images;
+	private List<String> existingImages;
 }

@@ -57,7 +57,9 @@
 			board_tb
 		set
 			board_title = #{title} ,
-			board_content = #{content}
+			board_content = #{content},
+			board_time = #{time},
+			board_img = #{imageFileNames}
 		where
 			board_id = #{boardId}
 	</update>
