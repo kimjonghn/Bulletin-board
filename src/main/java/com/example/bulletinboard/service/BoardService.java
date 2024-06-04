@@ -84,6 +84,7 @@ public class BoardService {
 					}   
 				    map.put("imageFileNames", String.join(",", imageFileNames));
 				}
+				 map.put("imageFileNames",  "");
 				return boardRepository.write(map);
 			}
 			return 0;
