@@ -38,6 +38,8 @@ public class AuthenticationController {
 	@ValidAspect
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto , BindingResult bindingResult){
+		System.out.println(signupReqDto.getPassword());
+		System.out.println(signupReqDto.getCheckPassword());
 		authenticationService.checkDuplicatedEmail(signupReqDto.getEmail());
 		authenticationService.checkDuplicatedPhone(signupReqDto.getPhone());
 		authenticationService.signup(signupReqDto);
@@ -67,11 +69,12 @@ public class AuthenticationController {
 		
 		return ResponseEntity.ok().body(authenticationService.findPassword(map));
 	}
+	@ValidAspect
 	@PutMapping("/updatepassword/{userid}")
-	public ResponseEntity<?> passwordchange(@PathVariable int userid ,@RequestBody PasswordUpdateDto passwordUpdateDto){
+	public ResponseEntity<?> passwordchange( @PathVariable int userid ,@Valid @RequestBody PasswordUpdateDto passwordUpdateDto , BindingResult bindingResult){
 
 		authenticationService.passwordChange(userid, passwordUpdateDto);
-		return ResponseEntity.ok().body(null);
+		return ResponseEntity.ok().body(true);
 	}
 	
 	@GetMapping("/userInfo")

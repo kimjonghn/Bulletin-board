@@ -55,9 +55,7 @@ public class BoardController {
 	}
 	@PostMapping("/modify/{boardId}")
 	public ResponseEntity<?> modify(@PathVariable int boardId, @ModelAttribute WriteReqDto writeReqDto){
-//		System.out.println(writeReqDto);
 		return ResponseEntity.ok().body(boardService.modify(boardId, writeReqDto));
-//		return null;
 	}
 	@PostMapping("/comment/{boardId}")
 	public ResponseEntity<?> comment(@RequestHeader(value="Authorization")String accessToken,
